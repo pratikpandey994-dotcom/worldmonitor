@@ -43,6 +43,10 @@ export function wrapWidgetHtml(html: string, extraClass = ''): string {
 
 const widgetBodyStore = new Map<string, string>();
 
+// Keyed by iframe element — persists HTML across DOM moves so the load listener
+// can re-post whenever the browser re-navigates the iframe after a drag.
+const iframeHtmlStore = new WeakMap<HTMLIFrameElement, string>();
+
 function buildWidgetDoc(bodyContent: string): string {
   return `<!DOCTYPE html>
 <html>
@@ -78,17 +82,23 @@ td{padding:5px 8px;border-bottom:1px solid var(--border-subtle);color:var(--text
 function mountProWidget(iframe: HTMLIFrameElement): void {
   const id = iframe.dataset.wmId;
   if (!id) return;
+
+  // Already wired up — the persistent load listener will re-post on every
+  // navigation (including after the panel is dragged to a new position).
+  if (iframeHtmlStore.has(iframe)) return;
+
   const body = widgetBodyStore.get(id);
   if (!body) return;
-  // Delete immediately — new ID is generated on every render, so no re-use
   widgetBodyStore.delete(id);
   const html = buildWidgetDoc(body);
-  // Always use load event: when MutationObserver fires, iframe.contentDocument is
-  // still about:blank (readyState 'complete'), not the sandbox page. Sending here
-  // would target the wrong window. Wait for the real load instead.
+  iframeHtmlStore.set(iframe, html);
+
+  // Persistent (no { once }) — fires on initial load AND whenever the browser
+  // re-navigates the iframe after its DOM position changes (drag/drop).
   iframe.addEventListener('load', () => {
-    iframe.contentWindow?.postMessage({ type: 'wm-html', html }, '*');
-  }, { once: true });
+    const storedHtml = iframeHtmlStore.get(iframe);
+    if (storedHtml) iframe.contentWindow?.postMessage({ type: 'wm-html', storedHtml }, '*');
+  });
 }
 
 if (typeof document !== 'undefined') {
