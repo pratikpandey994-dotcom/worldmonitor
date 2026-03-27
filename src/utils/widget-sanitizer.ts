@@ -97,7 +97,7 @@ function mountProWidget(iframe: HTMLIFrameElement): void {
   // re-navigates the iframe after its DOM position changes (drag/drop).
   iframe.addEventListener('load', () => {
     const storedHtml = iframeHtmlStore.get(iframe);
-    if (storedHtml) iframe.contentWindow?.postMessage({ type: 'wm-html', storedHtml }, '*');
+    if (storedHtml) iframe.contentWindow?.postMessage({ type: 'wm-html', html: storedHtml }, '*');
   });
 }
 
