@@ -6275,7 +6275,8 @@ describe('phase 3 simulation re-ingestion — computeSimulationAdjustment', () =
     candidateIndex: 0,
     routeFacilityKey,
     commodityKey,
-    marketContext: { topBucketId: 'energy', topChannel: 'energy_supply_shock' },
+    topBucketId: 'energy',
+    topChannel: 'energy_supply_shock',
   });
 
   it('T1: bucket+channel match gives +0.08', () => {
@@ -6409,7 +6410,7 @@ describe('phase 3 simulation re-ingestion — applySimulationMerge', () => {
     third: null,
     pathScore: 0.60,
     acceptanceScore,
-    candidate: { routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil' },
+    candidate: { routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', topBucketId: 'energy', topChannel: 'energy_supply_shock' },
   });
 
   const makeSimOutcome = (theaterId, topPaths, invalidators = [], stabilizers = []) => ({
@@ -6428,7 +6429,7 @@ describe('phase 3 simulation re-ingestion — applySimulationMerge', () => {
     const path = makeExpandedPath('state-1', 0.52);
     const evaluation = makeEval('completed', [path]);
     const simOutcome = makeSimOutcome('state-1', [], ['Red Sea reopened after diplomatic ceasefire']);
-    const candidatePackets = [{ candidateStateId: 'state-1', routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', marketContext: { topBucketId: 'energy', topChannel: 'energy_supply_shock' } }];
+    const candidatePackets = [{ candidateStateId: 'state-1', routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', topBucketId: 'energy', topChannel: 'energy_supply_shock' }];
     const { simulationEvidence } = applySimulationMerge(evaluation, simOutcome, candidatePackets, { generatedAt: Date.now(), impactExpansionCandidates: candidatePackets }, null);
     assert.equal(simulationEvidence.pathsDemoted, 1);
     assert.equal(evaluation.status, 'completed_no_material_change');
@@ -6440,7 +6441,7 @@ describe('phase 3 simulation re-ingestion — applySimulationMerge', () => {
     rejectedPath.direct.affectedAssets = ['Iran', 'Houthi', 'Saudi Aramco'];
     const evaluation = makeEval('completed_no_material_change', [acceptedBase], [rejectedPath]);
     const simOutcome = makeSimOutcome('state-1', [{ label: 'Oil energy supply shock escalation', summary: 'Crude supply disruption energy', keyActors: ['Iran', 'Houthi'] }]);
-    const candidatePackets = [{ candidateStateId: 'state-1', routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', marketContext: { topBucketId: 'energy', topChannel: 'energy_supply_shock' } }];
+    const candidatePackets = [{ candidateStateId: 'state-1', routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', topBucketId: 'energy', topChannel: 'energy_supply_shock' }];
     const snapshot = { generatedAt: Date.now(), impactExpansionCandidates: candidatePackets, fullRunPredictions: [], predictions: [], inputs: {}, deepForecast: {} };
     const { simulationEvidence } = applySimulationMerge(evaluation, simOutcome, candidatePackets, snapshot, null);
     assert.equal(simulationEvidence.pathsPromoted, 1);
@@ -6451,7 +6452,7 @@ describe('phase 3 simulation re-ingestion — applySimulationMerge', () => {
     const path = makeExpandedPath('state-999', 0.60);
     const evaluation = makeEval('completed', [path]);
     const simOutcome = makeSimOutcome('state-1', [{ label: 'energy shock', summary: 'energy supply disruption', keyActors: [] }]);
-    const candidatePackets = [{ candidateStateId: 'state-999', routeFacilityKey: '', commodityKey: '', marketContext: { topBucketId: 'energy', topChannel: 'energy_supply_shock' } }];
+    const candidatePackets = [{ candidateStateId: 'state-999', routeFacilityKey: '', commodityKey: '', topBucketId: 'energy', topChannel: 'energy_supply_shock' }];
     const { simulationEvidence } = applySimulationMerge(evaluation, simOutcome, candidatePackets, null, null);
     assert.equal(simulationEvidence.adjustments.length, 0);
     assert.equal(evaluation.status, 'completed');
@@ -6461,7 +6462,7 @@ describe('phase 3 simulation re-ingestion — applySimulationMerge', () => {
     const path = makeExpandedPath('state-1', 0.60);
     const evaluation = makeEval('completed', [path]);
     const simOutcome = makeSimOutcome('state-1', [{ label: 'Oil energy supply shock', summary: 'Crude energy disruption', keyActors: [] }]);
-    const candidatePackets = [{ candidateStateId: 'state-1', routeFacilityKey: '', commodityKey: '', marketContext: { topBucketId: 'energy', topChannel: 'energy_supply_shock' } }];
+    const candidatePackets = [{ candidateStateId: 'state-1', routeFacilityKey: '', commodityKey: '', topBucketId: 'energy', topChannel: 'energy_supply_shock' }];
     const { simulationEvidence } = applySimulationMerge(evaluation, simOutcome, candidatePackets, null, null);
     assert.equal(simulationEvidence.outcomeRunId, 'sim-run-001');
     assert.equal(simulationEvidence.theaterCount, 1);
@@ -6485,7 +6486,7 @@ describe('phase 3 simulation re-ingestion — applySimulationMerge', () => {
         stabilizers: [],
       }],
     };
-    const candidatePackets = [{ candidateStateId, routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', marketContext: { topBucketId: 'energy', topChannel: 'energy_supply_shock' } }];
+    const candidatePackets = [{ candidateStateId, routeFacilityKey: 'Red Sea', commodityKey: 'crude_oil', topBucketId: 'energy', topChannel: 'energy_supply_shock' }];
     const { simulationEvidence } = applySimulationMerge(evaluation, simOutcome, candidatePackets, { generatedAt: Date.now(), impactExpansionCandidates: candidatePackets }, null);
     assert.equal(simulationEvidence.pathsDemoted, 1, 'path should be demoted via candidateStateId lookup');
     assert.equal(simulationEvidence.adjustments.length, 1);
@@ -6527,6 +6528,24 @@ describe('phase 3 simulation re-ingestion — matching helpers', () => {
 
   it('matchesChannel returns false for unrelated text', () => {
     assert.ok(!matchesChannel({ label: 'Political talks', summary: 'Ceasefire' }, 'shipping_cost_shock'));
+  });
+
+  it('matchesChannel risk_off_rotation matches geopolitical sovereign risk scenario (production gap)', () => {
+    // Regression: simulation generates scenario language ("Sovereign Risk Spiral", "Economic Shockwave")
+    // not financial jargon ("risk aversion", "capital flight"). Bridge keywords fix this.
+    assert.ok(matchesChannel({ label: 'Regional Conflict & Sovereign Risk Spiral', summary: 'rapid repricing of sovereign risk' }, 'risk_off_rotation'));
+    assert.ok(matchesChannel({ label: 'Global Economic Shockwave', summary: '' }, 'risk_off_rotation'));
+    assert.ok(matchesChannel({ label: 'Market contagion from India FX crisis', summary: '' }, 'risk_off_rotation'));
+  });
+
+  it('matchesChannel energy_supply_shock matches oil infrastructure scenario (production gap)', () => {
+    assert.ok(matchesChannel({ label: 'Oil infrastructure damage leads to supply disruption', summary: '' }, 'energy_supply_shock'));
+    assert.ok(matchesChannel({ label: 'Crude price spike from supply disruption', summary: '' }, 'energy_supply_shock'));
+  });
+
+  it('matchesChannel shipping_cost_shock matches maritime rerouting scenario (production gap)', () => {
+    assert.ok(matchesChannel({ label: 'Tanker rerouting via Cape of Good Hope raises freight costs', summary: '' }, 'shipping_cost_shock'));
+    assert.ok(matchesChannel({ label: 'Shipping lane closure disrupts global maritime trade', summary: '' }, 'shipping_cost_shock'));
   });
 
   it('contradictsPremise detects reopening of named route', () => {
@@ -6583,12 +6602,12 @@ describe('phase 3 simulation re-ingestion — matching helpers', () => {
   });
 
   it('negatesDisruption — non-maritime: rates_inflation bucket + negation term matches', () => {
-    const candidatePacket = { routeFacilityKey: '', commodityKey: '', stateKind: 'market_repricing', marketContext: { topBucketId: 'rates_inflation', topChannel: 'policy_rate_pressure' } };
+    const candidatePacket = { routeFacilityKey: '', commodityKey: '', stateKind: 'market_repricing', topBucketId: 'rates_inflation' };
     assert.ok(negatesDisruption('inflation pressures stabilized as Fed signals rate normalization', candidatePacket));
   });
 
   it('negatesDisruption — non-maritime: unrelated stateKind text does not match', () => {
-    const candidatePacket = { routeFacilityKey: '', commodityKey: '', stateKind: 'cyber_pressure', marketContext: { topBucketId: 'rates_inflation', topChannel: '' } };
+    const candidatePacket = { routeFacilityKey: '', commodityKey: '', stateKind: 'cyber_pressure', topBucketId: 'rates_inflation' };
     // stabilizer text mentions "shipping restored" but theater is cyber/rates — no keyword match
     assert.ok(!negatesDisruption('Red Sea shipping lanes restored to normal', candidatePacket));
   });
