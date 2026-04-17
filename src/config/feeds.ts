@@ -53,7 +53,12 @@ export const SOURCE_TYPES: Record<string, SourceType> = {
 
   // Market/Finance
   'CNBC': 'market', 'MarketWatch': 'market', 'Yahoo Finance': 'market',
-  'Financial Times': 'market',
+  'Financial Times': 'market', 'Reuters India Markets': 'market',
+  'Moneycontrol Markets': 'market', 'Economic Times Markets': 'market',
+  'Business Standard Markets': 'market', 'Mint Markets': 'market',
+  'NSE India': 'market', 'BSE India': 'market', 'Investing.com INR': 'market',
+  'FXStreet India': 'market', 'RBI Announcements': 'gov', 'RBI Forex Reserves': 'gov',
+  'Zerodha Varsity': 'market', 'Angel One Research': 'market',
 
   // Tech
   'Hacker News': 'tech', 'Ars Technica': 'tech', 'The Verge': 'tech',
@@ -67,6 +72,8 @@ export const SOURCE_TYPES: Record<string, SourceType> = {
   'DealStreetAsia': 'tech', 'Pandaily (China)': 'tech', '36Kr English': 'tech',
   'TechNode (China)': 'tech', 'The Bridge (Japan)': 'tech', 'Nikkei Tech': 'tech',
   'Inc42 (India)': 'tech', 'YourStory': 'tech', 'TechCabal (Africa)': 'tech',
+  'Entrackr (India)': 'tech', 'VCCircle': 'tech', 'TechCircle': 'tech',
+  'Tracxn Daily': 'tech', 'Analytics India Magazine': 'tech', 'IndiaAI': 'tech',
   'Wamda (MENA)': 'tech', 'Magnitt': 'tech',
 
   // Think Tanks & Policy
@@ -83,7 +90,9 @@ export const SOURCE_TYPES: Record<string, SourceType> = {
   'FAO GIEWS': 'gov', 'EU ISS': 'intel',
   // New verified think tanks
   'War on the Rocks': 'intel', 'AEI': 'intel', 'Responsible Statecraft': 'intel',
-  'FPRI': 'intel', 'Jamestown': 'intel',
+  'FPRI': 'intel', 'Jamestown': 'intel', 'ORF': 'intel', 'Gateway House': 'intel',
+  'IDSA': 'intel', 'Carnegie India': 'intel', 'Brookings India': 'intel',
+  'Quad & BRICS Watch': 'intel', 'The Print Geopolitics': 'intel', 'Swarajya Geopolitics': 'intel',
 
   // Podcasts & Newsletters
   'Acquired Podcast': 'tech', 'All-In Podcast': 'tech', 'a16z Podcast': 'tech',
@@ -338,6 +347,15 @@ const FULL_FEEDS: Record<string, Feed[]> = {
     { name: 'FPRI', url: rss('https://www.fpri.org/feed/') },
     // Jamestown Foundation - Eurasia/China/Terrorism analysis
     { name: 'Jamestown', url: rss('https://jamestown.org/feed/') },
+    // India-focused geopolitical and strategic sources
+    { name: 'ORF', url: { en: rss('https://www.orfonline.org/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:orfonline.org+geopolitics+OR+strategy+when:7d&hl=en-US&gl=US&ceid=US:en'), backup2: rss('https://news.google.com/rss/search?q=%22Observer+Research+Foundation%22+India+foreign+policy+when:14d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'Gateway House', url: { en: rss('https://www.gatewayhouse.in/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:gatewayhouse.in+India+foreign+policy+when:14d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'IDSA', url: { en: rss('https://news.google.com/rss/search?q=site:idsa.in+India+security+OR+defense+when:14d&hl=en-US&gl=US&ceid=US:en'), backup1: rss('https://news.google.com/rss/search?q=%22Manohar+Parrikar+IDSA%22+when:14d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'Carnegie India', url: { en: rss('https://news.google.com/rss/search?q=site:carnegieindia.org+when:14d&hl=en-US&gl=US&ceid=US:en'), backup1: rss('https://news.google.com/rss/search?q=%22Carnegie+India%22+foreign+policy+when:14d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'Brookings India', url: { en: rss('https://news.google.com/rss/search?q=site:brookings.edu+India+policy+when:14d&hl=en-US&gl=US&ceid=US:en'), backup1: rss('https://news.google.com/rss/search?q=%22Brookings+India%22+when:14d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'Quad & BRICS Watch', url: { en: rss('https://news.google.com/rss/search?q=(Quad+OR+BRICS)+India+geopolitics+when:3d&hl=en-US&gl=US&ceid=US:en'), backup1: rss('https://news.google.com/rss/search?q=(G20+India+OR+Indo-Pacific+India)+strategy+when:3d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'The Print Geopolitics', url: { en: rss('https://theprint.in/category/world/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:theprint.in+geopolitics+OR+foreign+policy+when:7d&hl=en-US&gl=US&ceid=US:en') } },
+    { name: 'Swarajya Geopolitics', url: { en: rss('https://swarajyamag.com/feed'), backup1: rss('https://news.google.com/rss/search?q=site:swarajyamag.com+India+foreign+policy+when:7d&hl=en-US&gl=US&ceid=US:en') } },
   ],
   crisis: [
     { name: 'CrisisWatch', url: rss('https://www.crisisgroup.org/rss') },
@@ -397,6 +415,8 @@ const FULL_FEEDS: Record<string, Feed[]> = {
     { name: 'Indian Express', url: rss('https://indianexpress.com/section/india/feed/') },
     { name: 'NDTV', url: rss('https://feeds.feedburner.com/ndtvnews-top-stories') },
     { name: 'India News Network', url: rss('https://news.google.com/rss/search?q=India+diplomacy+foreign+policy+news&hl=en&gl=US&ceid=US:en') },
+    { name: 'The Print Geopolitics', url: { en: rss('https://theprint.in/category/world/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:theprint.in+India+foreign+policy+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Swarajya Geopolitics', url: { en: rss('https://swarajyamag.com/feed'), backup1: rss('https://news.google.com/rss/search?q=site:swarajyamag.com+India+foreign+policy+OR+Quad+OR+BRICS+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
     { name: 'CNA', url: rss('https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml') },
     { name: 'MIIT (China)', url: rss('https://news.google.com/rss/search?q=site:miit.gov.cn+when:7d&hl=zh-CN&gl=CN&ceid=CN:zh-Hans'), lang: 'zh' },
     { name: 'MOFCOM (China)', url: rss('https://news.google.com/rss/search?q=site:mofcom.gov.cn+when:7d&hl=zh-CN&gl=CN&ceid=CN:zh-Hans'), lang: 'zh' },
@@ -447,6 +467,8 @@ const TECH_FEEDS: Record<string, Feed[]> = {
     { name: 'AI Weekly', url: rss('https://news.google.com/rss/search?q="artificial+intelligence"+OR+"machine+learning"+when:3d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Anthropic News', url: rss('https://news.google.com/rss/search?q=Anthropic+Claude+AI+when:7d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'OpenAI News', url: rss('https://news.google.com/rss/search?q=OpenAI+ChatGPT+GPT-4+when:7d&hl=en-US&gl=US&ceid=US:en') },
+    { name: 'Analytics India Magazine', url: { en: rss('https://analyticsindiamag.com/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:analyticsindiamag.com+AI+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'IndiaAI', url: { en: rss('https://news.google.com/rss/search?q=site:indiaai.gov.in+AI+policy+OR+innovation+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=%22IndiaAI%22+government+India+when:14d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
   ],
   startups: [
     { name: 'TechCrunch Startups', url: rss('https://techcrunch.com/category/startups/feed/') },
@@ -459,6 +481,9 @@ const TECH_FEEDS: Record<string, Feed[]> = {
     { name: 'Fortune Term Sheet', url: rss('https://news.google.com/rss/search?q="Term+Sheet"+venture+capital+OR+startup+when:7d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'PitchBook News', url: rss('https://news.google.com/rss/search?q=site:pitchbook.com+when:7d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'CB Insights', url: rss('https://www.cbinsights.com/research/feed/') },
+    { name: 'Entrackr (India)', url: { en: rss('https://entrackr.com/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:entrackr.com+startup+funding+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'VCCircle', url: { en: rss('https://www.vccircle.com/feed'), backup1: rss('https://news.google.com/rss/search?q=site:vccircle.com+startup+OR+M%26A+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'TechCircle', url: { en: rss('https://news.google.com/rss/search?q=site:techcircle.in+startup+OR+M%26A+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=%22TechCircle%22+India+startup+when:14d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
   ],
   vcblogs: [
     { name: 'Y Combinator Blog', url: rss('https://www.ycombinator.com/blog/rss/') },
@@ -495,6 +520,7 @@ const TECH_FEEDS: Record<string, Feed[]> = {
     // India
     { name: 'Inc42 (India)', url: rss('https://inc42.com/feed/') },
     { name: 'YourStory', url: rss('https://yourstory.com/feed') },
+    { name: 'Tracxn Daily', url: { en: rss('https://news.google.com/rss/search?q=site:tracxn.com+India+startup+OR+funding+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=%22Tracxn%22+startup+intelligence+when:14d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
     { name: 'India Startups', url: rss('https://news.google.com/rss/search?q=India+startup+funding+OR+"Indian+startup"+when:7d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'India Tech News', url: rss('https://news.google.com/rss/search?q=(Flipkart+OR+Razorpay+OR+Zerodha+OR+Zomato+OR+Paytm+OR+PhonePe)+when:7d&hl=en-US&gl=US&ceid=US:en') },
     // Southeast Asia
@@ -657,11 +683,24 @@ const FINANCE_FEEDS: Record<string, Feed[]> = {
     { name: 'Reuters Markets', url: rss('https://news.google.com/rss/search?q=site:reuters.com+markets+stocks+when:1d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Bloomberg Markets', url: rss('https://news.google.com/rss/search?q=site:bloomberg.com+markets+when:1d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Investing.com News', url: rss('https://news.google.com/rss/search?q=site:investing.com+markets+when:1d&hl=en-US&gl=US&ceid=US:en') },
+    { name: 'Reuters India Markets', url: { en: rss('https://news.google.com/rss/search?q=site:reuters.com+India+markets+rupee+when:1d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=site:reuters.com+NSE+OR+BSE+when:2d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Moneycontrol Markets', url: { en: rss('https://news.google.com/rss/search?q=site:moneycontrol.com+markets+when:1d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://www.moneycontrol.com/rss/business.xml'), backup2: rss('https://news.google.com/rss/search?q=site:moneycontrol.com+NSE+OR+BSE+when:2d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Economic Times Markets', url: { en: rss('https://news.google.com/rss/search?q=site:economictimes.indiatimes.com+markets+when:1d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms'), backup2: rss('https://news.google.com/rss/search?q=%22Economic+Times%22+NSE+when:2d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Business Standard Markets', url: { en: rss('https://news.google.com/rss/search?q=site:business-standard.com+markets+when:2d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=%22Business+Standard%22+NSE+OR+BSE+when:3d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Mint Markets', url: { en: rss('https://news.google.com/rss/search?q=site:livemint.com+markets+when:2d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=%22Mint%22+markets+India+when:2d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'NSE India', url: { en: rss('https://news.google.com/rss/search?q=NSE+India+exchange+announcement+when:2d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=site:nseindia.com+circular+OR+market+watch+when:3d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'BSE India', url: { en: rss('https://news.google.com/rss/search?q=BSE+India+exchange+announcement+when:2d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=site:bseindia.com+notice+OR+market+when:3d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Zerodha Varsity', url: { en: rss('https://zerodha.com/varsity/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:zerodha.com+varsity+OR+research+when:14d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Angel One Research', url: { en: rss('https://news.google.com/rss/search?q=site:angelone.in+research+OR+market+outlook+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=%22Angel+One%22+market+research+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
   ],
   forex: [
     { name: 'Forex News', url: rss('https://news.google.com/rss/search?q=("forex"+OR+"currency"+OR+"FX+market")+trading+when:1d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Dollar Watch', url: rss('https://news.google.com/rss/search?q=("dollar+index"+OR+DXY+OR+"US+dollar"+OR+"euro+dollar")+when:2d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Central Bank Rates', url: rss('https://news.google.com/rss/search?q=("central+bank"+OR+"interest+rate"+OR+"rate+decision"+OR+"monetary+policy")+when:2d&hl=en-US&gl=US&ceid=US:en') },
+    { name: 'RBI Announcements', url: { en: rss('https://news.google.com/rss/search?q=site:rbi.org.in+announcement+OR+press+release+when:3d&hl=en-IN&gl=IN&ceid=IN:en'), hi: rss('https://news.google.com/rss/search?q=site:rbi.org.in+%E0%A4%86%E0%A4%B0%E0%A4%AC%E0%A5%80%E0%A4%86%E0%A4%88+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A5%87%E0%A4%B8+%E0%A4%B5%E0%A4%BF%E0%A4%9C%E0%A5%8D%E0%A4%9E%E0%A4%AA%E0%A5%8D%E0%A4%A4%E0%A4%BF+when:7d&hl=hi&gl=IN&ceid=IN:hi'), backup1: rss('https://news.google.com/rss/search?q=%22Reserve+Bank+of+India%22+press+release+when:3d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'RBI Forex Reserves', url: { en: rss('https://news.google.com/rss/search?q=(RBI+OR+%22Reserve+Bank+of+India%22)+%22forex+reserves%22+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=site:rbi.org.in+%22foreign+exchange+reserves%22+when:14d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Investing.com INR', url: { en: rss('https://news.google.com/rss/search?q=site:investing.com+INR+USDINR+when:2d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=site:in.investing.com+rupee+when:2d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'FXStreet India', url: { en: rss('https://news.google.com/rss/search?q=site:fxstreet.com+rupee+OR+USDINR+when:2d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=FXStreet+India+forex+when:2d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
   ],
   bonds: [
     { name: 'Bond Market', url: rss('https://news.google.com/rss/search?q=("bond+market"+OR+"treasury+yields"+OR+"bond+yields"+OR+"fixed+income")+when:2d&hl=en-US&gl=US&ceid=US:en') },
@@ -693,6 +732,11 @@ const FINANCE_FEEDS: Record<string, Feed[]> = {
     { name: 'Reuters Crypto', url: rss('https://news.google.com/rss/search?q=reuters+crypto+when:1d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'NFT News', url: rss('https://news.google.com/rss/search?q=(NFT+OR+"non-fungible")+when:3d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Stablecoin Policy', url: rss('https://news.google.com/rss/search?q=(stablecoin+regulation+OR+"stablecoin+bill")+when:7d&hl=en-US&gl=US&ceid=US:en') },
+    { name: 'WazirX', url: { en: rss('https://wazirx.com/blog/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:wazirx.com+OR+WazirX+announcement+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'CoinDCX', url: { en: rss('https://coindcx.com/blog/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:coindcx.com+OR+CoinDCX+announcement+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'ZebPay', url: { en: rss('https://zebpay.com/blog/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:zebpay.com+crypto+OR+policy+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Unocoin', url: { en: rss('https://news.google.com/rss/search?q=site:unocoin.com+blog+OR+announcement+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=Unocoin+India+crypto+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
+    { name: 'Mudrex Research', url: { en: rss('https://mudrex.com/learn/feed/'), backup1: rss('https://news.google.com/rss/search?q=site:mudrex.com+crypto+research+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
   ],
   centralbanks: [
     { name: 'Federal Reserve', url: rss('https://www.federalreserve.gov/feeds/press_all.xml') },
@@ -726,6 +770,7 @@ const FINANCE_FEEDS: Record<string, Feed[]> = {
     { name: 'Financial Regulation', url: rss('https://news.google.com/rss/search?q=(SEC+OR+CFTC+OR+FINRA+OR+FCA)+regulation+OR+enforcement+when:3d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Banking Rules', url: rss('https://news.google.com/rss/search?q=(Basel+OR+"capital+requirements"+OR+"banking+regulation")+when:7d&hl=en-US&gl=US&ceid=US:en') },
     { name: 'Crypto Regulation', url: rss('https://news.google.com/rss/search?q=(crypto+regulation+OR+"digital+asset"+regulation+OR+"stablecoin"+regulation)+when:7d&hl=en-US&gl=US&ceid=US:en') },
+    { name: 'India Crypto Policy', url: { en: rss('https://news.google.com/rss/search?q=(India+crypto+tax+OR+India+virtual+digital+asset+OR+VDA+tax+OR+FIU+crypto)+when:7d&hl=en-IN&gl=IN&ceid=IN:en'), backup1: rss('https://news.google.com/rss/search?q=(RBI+crypto+OR+SEBI+crypto+OR+India+crypto+regulation)+when:7d&hl=en-IN&gl=IN&ceid=IN:en') }, lang: 'en' },
   ],
   institutional: [
     { name: 'Hedge Fund News', url: rss('https://news.google.com/rss/search?q=("hedge+fund"+OR+"Bridgewater"+OR+"Citadel"+OR+"Renaissance")+when:7d&hl=en-US&gl=US&ceid=US:en') },
@@ -984,13 +1029,13 @@ export const DEFAULT_ENABLED_SOURCES: Record<string, string[]> = {
   middleeast: ['BBC Middle East', 'Al Jazeera', 'Al Arabiya', 'Guardian ME', 'BBC Persian', 'Iran International', 'Haaretz', 'Asharq News', 'The National'],
   africa: ['BBC Africa', 'News24', 'Africanews', 'Jeune Afrique', 'Africa News', 'Premium Times', 'Channels TV', 'Sahel Crisis'],
   latam: ['BBC Latin America', 'Reuters LatAm', 'InSight Crime', 'Mexico News Daily', 'Clarín', 'Primicias', 'Infobae Americas', 'El Universo'],
-  asia: ['BBC Asia', 'The Diplomat', 'South China Morning Post', 'Reuters Asia', 'Nikkei Asia', 'CNA', 'Asia News', 'The Hindu'],
+  asia: ['BBC Asia', 'The Diplomat', 'South China Morning Post', 'Reuters Asia', 'Nikkei Asia', 'CNA', 'Asia News', 'The Hindu', 'The Print Geopolitics'],
   tech: ['Hacker News', 'Ars Technica', 'The Verge', 'MIT Tech Review'],
   ai: ['AI News', 'VentureBeat AI', 'The Verge AI', 'MIT Tech Review', 'ArXiv AI'],
-  finance: ['CNBC', 'MarketWatch', 'Yahoo Finance', 'Financial Times', 'Reuters Business'],
+  finance: ['CNBC', 'MarketWatch', 'Yahoo Finance', 'Financial Times', 'Reuters Business', 'Moneycontrol Markets', 'Economic Times Markets'],
   gov: ['White House', 'State Dept', 'Pentagon', 'UN News', 'CISA', 'Treasury', 'DOJ', 'CDC'],
   layoffs: ['Layoffs.fyi', 'TechCrunch Layoffs', 'Layoffs News'],
-  thinktanks: ['Foreign Policy', 'Atlantic Council', 'Foreign Affairs', 'CSIS', 'RAND', 'Brookings', 'Carnegie', 'War on the Rocks'],
+  thinktanks: ['Foreign Policy', 'Atlantic Council', 'Foreign Affairs', 'CSIS', 'RAND', 'Brookings', 'Carnegie', 'War on the Rocks', 'ORF', 'Gateway House'],
   crisis: ['CrisisWatch', 'IAEA', 'WHO', 'UNHCR'],
   energy: ['Oil & Gas', 'Nuclear Energy', 'Reuters Energy', 'Mining & Resources'],
 };

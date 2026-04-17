@@ -156,6 +156,12 @@ function makeDeferred() {
   return { promise, resolve, reject };
 }
 
+function parseSseField(line, field) {
+  if (!line.startsWith(`${field}:`)) return null;
+  const value = line.slice(field.length + 1);
+  return value.startsWith(' ') ? value.slice(1) : value;
+}
+
 class SseSession {
   constructor(sseUrl, headers) {
     this._sseUrl = sseUrl;
@@ -199,17 +205,21 @@ class SseSession {
           buf += dec.decode(value, { stream: true });
           const lines = buf.split('\n');
           buf = lines.pop() ?? '';
-          for (const line of lines) {
-            if (line.startsWith('event: ')) {
-              eventType = line.slice(7).trim();
-            } else if (line.startsWith('data: ')) {
-              const data = line.slice(6).trim();
+          for (const rawLine of lines) {
+            const line = rawLine.endsWith('\r') ? rawLine.slice(0, -1) : rawLine;
+            const eventValue = parseSseField(line, 'event');
+            if (eventValue !== null) {
+              eventType = eventValue.trim();
+            } else {
+              const dataValue = parseSseField(line, 'data');
+              if (dataValue === null) continue;
+              const data = dataValue.trim();
               if (eventType === 'endpoint') {
                 // Resolve endpoint URL (relative path or absolute) then re-validate
                 // to prevent SSRF: a malicious server could emit an RFC1918 address.
                 let resolved;
                 try {
-                  resolved = new URL(data.startsWith('http') ? data : data, self._sseUrl);
+                  resolved = new URL(data, self._sseUrl);
                 } catch {
                   self._endpointDeferred.reject(new Error('SSE endpoint event contains invalid URL'));
                   return;
