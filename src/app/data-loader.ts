@@ -12,6 +12,7 @@ import {
   MARKET_SYMBOLS,
   SITE_VARIANT,
   LAYER_TO_SOURCE,
+  TECH_MARKET_SYMBOLS,
 } from '@/config';
 import { INTEL_HOTSPOTS, CONFLICT_ZONES } from '@/config/geo';
 import { tokenizeForMatch, matchKeyword } from '@/utils/keyword-match';
@@ -1352,9 +1353,12 @@ export class DataLoaderManager implements AppModule {
   async loadMarkets(): Promise<void> {
     try {
       const customEntries = getMarketWatchlistEntries();
+      const baseSymbols = SITE_VARIANT === 'tech'
+        ? [...TECH_MARKET_SYMBOLS]
+        : MARKET_SYMBOLS;
       const effectiveSymbols = (() => {
-        if (customEntries.length === 0) return MARKET_SYMBOLS;
-        const base = MARKET_SYMBOLS.slice();
+        if (customEntries.length === 0) return baseSymbols;
+        const base = baseSymbols.slice();
         const seen = new Set(base.map((s) => s.symbol));
         for (const entry of customEntries) {
           const sym = entry.symbol;

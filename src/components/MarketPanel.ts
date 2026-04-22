@@ -60,7 +60,7 @@ export class MarketPanel extends Panel {
       <div style="padding:14px 16px 16px 16px">
         <div style="color:var(--text-dim);font-size:12px;line-height:1.4;margin-bottom:10px">
           Add extra tickers (comma or newline separated). Friendly labels supported: SYMBOL|Label.
-          Example: TSLA|Tesla, AAPL|Apple, ^GSPC|S&P 500
+          Example: XAUUSD=X|Gold Spot, EURUSD=X|EUR/USD, GBPUSD=X|GBP/USD
           <br/>
           Tip: keep it under ~30 unless you enjoy scrolling.
         </div>

@@ -183,6 +183,13 @@ export const FEEDS: Record<string, Feed[]> = {
   ],
 };
 
+
+export const TECH_MARKET_SYMBOLS = [
+  { symbol: 'XAUUSD=X', name: 'Gold Spot', display: 'XAUUSD' },
+  { symbol: 'EURUSD=X', name: 'EUR/USD Spot', display: 'EURUSD' },
+  { symbol: 'GBPUSD=X', name: 'GBP/USD Spot', display: 'GBPUSD' },
+];
+
 // Panel configuration for tech/AI analysis
 export const DEFAULT_PANELS: Record<string, PanelConfig> = {
   map: { name: 'Global Tech Map', enabled: true, priority: 1 },
@@ -198,7 +205,7 @@ export const DEFAULT_PANELS: Record<string, PanelConfig> = {
   security: { name: 'Cybersecurity', enabled: true, priority: 1 },
   policy: { name: 'AI Policy & Regulation', enabled: true, priority: 1 },
   layoffs: { name: 'Layoffs Tracker', enabled: true, priority: 1 },
-  markets: { name: 'Tech Stocks', enabled: true, priority: 2 },
+  markets: { name: 'FX & Gold Spot', enabled: true, priority: 2 },
   finance: { name: 'Financial News', enabled: true, priority: 2 },
   crypto: { name: 'Crypto', enabled: true, priority: 2 },
   hardware: { name: 'Semiconductors & Hardware', enabled: true, priority: 2 },
