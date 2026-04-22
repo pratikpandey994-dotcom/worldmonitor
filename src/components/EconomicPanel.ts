@@ -40,7 +40,7 @@ function notifyIfStressCrossed(score: number): void {
     sessionStorage.setItem(STRESS_NOTIFICATION_KEY, String(level));
     new Notification('Economic Stress Alert', {
       body: `Composite stress index reached ${score.toFixed(1)} (${score >= 85 ? 'Critical' : 'Severe'})`,
-      icon: '/favico/favicon-32x32.png',
+      icon: '/favico/tradeterminal-mark.svg',
       tag: 'economic-stress',
     });
   } catch { /* Notification API can throw in some environments */ }

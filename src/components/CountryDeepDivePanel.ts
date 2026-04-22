@@ -41,7 +41,6 @@ import type {
 } from '@/services/supply-chain';
 import { fetchMultiSectorCostShock, HS2_SHORT_LABELS } from '@/services/supply-chain';
 import type { MapContainer } from './MapContainer';
-import { ResilienceWidget } from './ResilienceWidget';
 import { dedupeHeadlines } from './CountryDeepDivePanel-news-utils';
 
 const DEPENDENCY_FLAG_LABELS: Record<string, { text: string; cls: string }> = {
@@ -105,7 +104,6 @@ export class CountryDeepDivePanel implements CountryBriefPanel {
   private timelineBody: HTMLElement | null = null;
   private scoreCard: HTMLElement | null = null;
   private factsBody: HTMLElement | null = null;
-  private resilienceWidget: ResilienceWidget | null = null;
   private energyBody: HTMLElement | null = null;
   private maritimeBody: HTMLElement | null = null;
   private tradeExposureBody: HTMLElement | null = null;
@@ -242,7 +240,6 @@ export class CountryDeepDivePanel implements CountryBriefPanel {
   }
 
   public hide(): void {
-    this.destroyResilienceWidget();
     if (this.isMaximizedState) {
       this.isMaximizedState = false;
       this.panel.classList.remove('maximized');
@@ -866,7 +863,6 @@ export class CountryDeepDivePanel implements CountryBriefPanel {
   public updateEnergyProfile(data: CountryEnergyProfileData): void {
     if (!this.energyBody) return;
     this.renderEnergyProfile(data);
-    this.resilienceWidget?.setEnergyMix(data);
   }
 
   private renderEnergyProfile(data: CountryEnergyProfileData): void {
@@ -2193,9 +2189,8 @@ export class CountryDeepDivePanel implements CountryBriefPanel {
       scoreCard.append(this.makeEmpty(t('countryBrief.ciiUnavailable')));
     }
 
-    this.resilienceWidget = new ResilienceWidget(code);
     const summaryGrid = this.el('div', 'cdp-summary-grid');
-    summaryGrid.append(scoreCard, this.resilienceWidget.getElement());
+    summaryGrid.append(scoreCard);
 
     const bodyGrid = this.el('div', 'cdp-grid');
     const [signalsCard, signalBody] = this.sectionCard(t('countryBrief.activeSignals'));
@@ -2286,13 +2281,7 @@ export class CountryDeepDivePanel implements CountryBriefPanel {
     this.content.append(shell);
   }
 
-  private destroyResilienceWidget(): void {
-    this.resilienceWidget?.destroy();
-    this.resilienceWidget = null;
-  }
-
   private resetPanelContent(): void {
-    this.destroyResilienceWidget();
     this.selectedSectorHs2 = null;
     this.sectorBypassAbort?.abort();
     this.sectorBypassAbort = null;

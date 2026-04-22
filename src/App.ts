@@ -70,7 +70,6 @@ import { PanelLayoutManager } from '@/app/panel-layout';
 import { DataLoaderManager } from '@/app/data-loader';
 import { EventHandlerManager } from '@/app/event-handlers';
 import { resolveUserRegion, resolvePreciseUserCoordinates, type PreciseCoordinates } from '@/utils/user-location';
-import { showProBanner } from '@/components/ProBanner';
 import { initAuthState, subscribeAuthState } from '@/services/auth-state';
 import { install as installCloudPrefsSync, onSignIn as cloudPrefsSignIn, onSignOut as cloudPrefsSignOut } from '@/utils/cloud-prefs-sync';
 import { getConvexClient, getConvexApi, waitForConvexAuth } from '@/services/convex-client';
@@ -616,6 +615,28 @@ export class App {
       localStorage.setItem(PANEL_PRUNE_KEY, 'done');
     }
 
+    const FOREX_TERMINAL_RESET_KEY = 'worldmonitor-forex-terminal-reset-v1';
+    if (!localStorage.getItem(FOREX_TERMINAL_RESET_KEY) && (SITE_VARIANT === 'full' || SITE_VARIANT === 'finance')) {
+      const variantDefaults = new Set(VARIANT_DEFAULTS[SITE_VARIANT] ?? []);
+      for (const key of Object.keys(panelSettings)) {
+        if (isDynamicPanel(key)) continue;
+        if (!variantDefaults.has(key)) {
+          panelSettings[key] = { ...panelSettings[key]!, enabled: false };
+          continue;
+        }
+        panelSettings[key] = {
+          ...getEffectivePanelConfig(key, SITE_VARIANT),
+          enabled: true,
+        };
+      }
+      saveToStorage(STORAGE_KEYS.panels, panelSettings);
+      localStorage.removeItem(PANEL_ORDER_KEY);
+      localStorage.removeItem(PANEL_ORDER_KEY + '-bottom');
+      localStorage.removeItem(PANEL_ORDER_KEY + '-bottom-set');
+      localStorage.removeItem(PANEL_SPANS_KEY);
+      localStorage.setItem(FOREX_TERMINAL_RESET_KEY, 'done');
+    }
+
     // One-time migration: clear stale panel ordering and sizing state
     const LAYOUT_RESET_MIGRATION_KEY = 'worldmonitor-layout-reset-v2.5';
     if (!localStorage.getItem(LAYOUT_RESET_MIGRATION_KEY)) {
@@ -918,9 +939,8 @@ export class App {
     const resolvedRegion = await resolveUserRegion();
     this.state.resolvedLocation = resolvedRegion;
 
-    // Phase 1: Layout (creates map + panels — they'll find hydrated data)
+    // Phase 1: Layout (creates panels — they'll find hydrated data)
     this.panelLayout.init();
-    showProBanner(this.state.container);
     this.updateConnectivityUi();
     window.addEventListener('online', this.handleConnectivityChange);
     window.addEventListener('offline', this.handleConnectivityChange);

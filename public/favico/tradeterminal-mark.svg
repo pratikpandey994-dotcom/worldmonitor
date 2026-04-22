@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TradeTerminal">
+  <defs>
+    <linearGradient id="tt-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5cd4b2" />
+      <stop offset="100%" stop-color="#10181d" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#0d1419" />
+  <rect x="8" y="8" width="112" height="112" rx="22" fill="url(#tt-bg)" opacity="0.25" />
+  <path d="M31 37h66v12H70v42H58V49H31z" fill="#f5fbf9" />
+  <path d="M47 99h34" stroke="#5cd4b2" stroke-width="8" stroke-linecap="round" />
+</svg>

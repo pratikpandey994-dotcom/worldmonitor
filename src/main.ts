@@ -1,9 +1,11 @@
 import './styles/base-layer.css';
 import './styles/happy-theme.css';
+import './styles/portfolio-homepage.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import * as Sentry from '@sentry/browser';
 import { inject } from '@vercel/analytics';
 import { App } from './App';
+import { PortfolioHomepage } from './components/PortfolioHomepage';
 import { installUtmInterceptor } from './utils/utm';
 
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN?.trim();
@@ -591,14 +593,30 @@ if (urlParams.get('settings') === '1') {
     }
   );
 } else {
+  const currentUrl = new URL(window.location.href);
+  if (currentUrl.pathname === '/') {
+    currentUrl.pathname = '/portfolio';
+    window.history.replaceState(window.history.state, '', currentUrl.toString());
+  }
+
   installUtmInterceptor();
-  const app = new App('app');
-  app
-    .init()
-    .then(() => {
-      clearChunkReloadGuard(chunkReloadStorageKey);
-    })
-    .catch(console.error);
+  if (window.location.pathname === '/portfolio') {
+    const homepage = new PortfolioHomepage('app');
+    homepage
+      .mount()
+      .then(() => {
+        clearChunkReloadGuard(chunkReloadStorageKey);
+      })
+      .catch(console.error);
+  } else {
+    const app = new App('app');
+    app
+      .init()
+      .then(() => {
+        clearChunkReloadGuard(chunkReloadStorageKey);
+      })
+      .catch(console.error);
+  }
 }
 
 // Debug helpers for geo-convergence testing (remove in production)

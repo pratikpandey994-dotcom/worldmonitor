@@ -52,7 +52,7 @@ export class CurrentRouteTab {
     this.element.innerHTML =
       '<div class="re-tab__empty">' +
       '<h3>No modeled lane</h3>' +
-      '<p>WorldMonitor does not have a modeled maritime route between these two countries. ' +
+      '<p>TradeTerminal does not have a modeled maritime route between these two countries. ' +
       'This may mean the pair shares no major trade corridor in our dataset, or one country is landlocked.</p>' +
       '</div>';
   }

@@ -224,6 +224,13 @@
       "removal_issue": null
     },
     {
+      "path": "api/trade-impact-feed.js",
+      "category": "internal-helper",
+      "reason": "TradeTerminal portfolio helper that composes existing news/v1 digest scraping with summarize-article LLM analysis into a watchlist-scoped sidebar feed. Temporary orchestration layer until the dedicated proto service exists.",
+      "owner": "@SebastienMelki",
+      "removal_issue": null
+    },
+    {
       "path": "api/geo.js",
       "category": "internal-helper",
       "reason": "Lightweight IP-to-geo lookup wrapping Vercel's request.geo. Dashboard-internal helper; not worth a service of its own.",

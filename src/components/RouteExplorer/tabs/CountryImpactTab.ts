@@ -64,7 +64,7 @@ export class CountryImpactTab {
     this.element.innerHTML =
       '<div class="re-tab__empty">' +
       '<h3>No trade data available</h3>' +
-      '<p>WorldMonitor does not have bilateral trade data for this destination country yet.</p>' +
+      '<p>TradeTerminal does not have bilateral trade data for this destination country yet.</p>' +
       '</div>';
   }
 
@@ -80,14 +80,14 @@ export class CountryImpactTab {
     this.element.innerHTML =
       '<div class="re-tab__empty">' +
       '<h3>Loading trade data</h3>' +
-      '<p>WorldMonitor is fetching trade data for this destination for the first time. ' +
+      '<p>TradeTerminal is fetching trade data for this destination for the first time. ' +
       'Try again in a few seconds.</p>' +
       '</div>';
   }
 
   private renderData(data: GetRouteImpactResponse): void {
     const bannerHtml = !data.hs2InSeededUniverse
-      ? '<div class="re-impact__banner">Lane value for this HS code is not in WorldMonitor\'s strategic-products dataset. Top strategic products shown below.</div>'
+      ? '<div class="re-impact__banner">Lane value for this HS code is not in TradeTerminal\'s strategic-products dataset. Top strategic products shown below.</div>'
       : '';
 
     const laneHtml = data.hs2InSeededUniverse
