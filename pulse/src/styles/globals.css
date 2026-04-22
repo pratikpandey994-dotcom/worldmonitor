@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-base: #080a0f;
+  --bg-surface: #0e1117;
+  --bg-elevated: #161b25;
+  --border: #1e2535;
+  --border-active: #2d3a50;
+  --text-primary: #e8edf5;
+  --text-secondary: #7a8599;
+  --text-muted: #3d4a5c;
+  --accent-green: #00d68f;
+  --accent-red: #ff4d6a;
+  --accent-amber: #ffb547;
+  --accent-blue: #4d9eff;
+  --accent-purple: #8b5cf6;
+  --gradient-pulse: linear-gradient(135deg, #4d9eff 0%, #8b5cf6 100%);
+  --font-data: 'Geist Mono', monospace;
+  --font-editorial: 'Instrument Serif', serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-data);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg-base);
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, rgba(77, 158, 255, 0.09), transparent 28%), var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-data);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
