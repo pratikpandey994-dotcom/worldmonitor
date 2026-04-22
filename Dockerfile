@@ -24,6 +24,7 @@ RUN node docker/build-handlers.mjs
 
 # Build Vite frontend (outputs to dist/)
 # Skip blog build — blog-site has its own deps not installed here
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npx tsc && npx vite build
 
 # ── Stage 2: Runtime ─────────────────────────────────────────────────────────
