@@ -93,6 +93,7 @@ export {
 export { TECH_COMPANIES } from './tech-companies';
 export { AI_RESEARCH_LABS } from './ai-research-labs';
 export { STARTUP_ECOSYSTEMS } from './startup-ecosystems';
+export { TECH_MARKET_SYMBOLS } from './variants/tech';
 export {
   AI_REGULATIONS,
   REGULATORY_ACTIONS,

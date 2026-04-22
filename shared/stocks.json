@@ -9,6 +9,9 @@
     { "symbol": "GOOGL", "name": "Alphabet", "display": "GOOGL" },
     { "symbol": "AMZN", "name": "Amazon", "display": "AMZN" },
     { "symbol": "META", "name": "Meta", "display": "META" },
+    { "symbol": "XAUUSD=X", "name": "Gold Spot", "display": "XAUUSD" },
+    { "symbol": "EURUSD=X", "name": "EUR/USD Spot", "display": "EURUSD" },
+    { "symbol": "GBPUSD=X", "name": "GBP/USD Spot", "display": "GBPUSD" },
     { "symbol": "BRK-B", "name": "Berkshire", "display": "BRK.B" },
     { "symbol": "TSM", "name": "TSMC", "display": "TSM" },
     { "symbol": "LLY", "name": "Eli Lilly", "display": "LLY" },
@@ -51,6 +54,7 @@
   ],
   "yahooOnly": [
     "^GSPC", "^DJI", "^IXIC",
+    "XAUUSD=X", "EURUSD=X", "GBPUSD=X",
     "^NSEI", "^BSESN",
     "RELIANCE.NS", "TCS.NS", "HDFCBANK.NS", "ICICIBANK.NS", "BHARTIARTL.NS",
     "INFY.NS", "SBIN.NS", "LICI.NS", "ITC.NS", "HINDUNILVR.NS",
