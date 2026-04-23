@@ -362,6 +362,69 @@ describe('api/mcp-proxy', () => {
       // Result is 422 (stream closed before endpoint or RPC error) — not a node: DNS failure
       assert.ok([200, 422, 504].includes(res.status), `Unexpected status: ${res.status}`);
     });
+
+    it('parses endpoint events without a space after colon', async () => {
+      let messagePostCount = 0;
+      globalThis.fetch = async (_url, opts) => {
+        // SSE connect
+        if (!opts?.body) {
+          const encoder = new TextEncoder();
+          const stream = new ReadableStream({
+            start(controller) {
+              controller.enqueue(encoder.encode('event:endpoint\ndata:/messages\n\n'));
+              controller.close();
+            },
+          });
+          return new Response(stream, {
+            status: 200,
+            headers: { 'Content-Type': 'text/event-stream' },
+          });
+        }
+
+        messagePostCount++;
+        const body = JSON.parse(opts.body);
+        if (body.method === 'initialize') {
+          return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (body.method === 'notifications/initialized') {
+          return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (body.method === 'tools/list') {
+          return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+      };
+
+      const res = await handler(makeGetRequest({ serverUrl: 'https://mcp.example.com/sse' }));
+      assert.ok([200, 422, 504].includes(res.status), `Unexpected status: ${res.status}`);
+      assert.ok(messagePostCount >= 1, 'Expected JSON-RPC messages to be posted to endpoint');
+    });
+
+    it('parses CRLF-formatted endpoint events', async () => {
+      let sawRpcPost = false;
+      globalThis.fetch = async (_url, opts) => {
+        // SSE connect
+        if (!opts?.body) {
+          const encoder = new TextEncoder();
+          const stream = new ReadableStream({
+            start(controller) {
+              controller.enqueue(encoder.encode('event: endpoint\r\ndata: /messages\r\n\r\n'));
+              controller.close();
+            },
+          });
+          return new Response(stream, {
+            status: 200,
+            headers: { 'Content-Type': 'text/event-stream' },
+          });
+        }
+        sawRpcPost = true;
+        return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+      };
+
+      const res = await handler(makeGetRequest({ serverUrl: 'https://mcp.example.com/sse' }));
+      assert.ok([200, 422, 504].includes(res.status), `Unexpected status: ${res.status}`);
+      assert.ok(sawRpcPost, 'Expected at least one RPC POST after CRLF endpoint event');
+    });
   });
 
   // ── SSE SSRF protection ───────────────────────────────────────────────────

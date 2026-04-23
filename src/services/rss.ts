@@ -214,16 +214,42 @@ export async function fetchFeed(feed: Feed): Promise<NewsItem[]> {
   }
 
   try {
-    let url = typeof feed.url === 'string' ? feed.url : feed.url.en;
-    if (typeof feed.url !== 'string') {
-      url = feed.url[currentLang] || feed.url.en || Object.values(feed.url)[0] || '';
+    const candidateUrls = typeof feed.url === 'string'
+      ? [feed.url]
+      : (() => {
+        const urls: string[] = [];
+        const append = (value: unknown) => {
+          if (typeof value === 'string' && value.trim()) urls.push(value);
+        };
+        append(feed.url[currentLang]);
+        append(feed.url.en);
+        for (const value of Object.values(feed.url)) append(value);
+        return [...new Set(urls)];
+      })();
+
+    if (candidateUrls.length === 0) throw new Error(`No URL found for feed ${feed.name}`);
+
+    let text = '';
+    let lastStatus = 0;
+    let lastError: unknown = null;
+
+    for (const url of candidateUrls) {
+      try {
+        const response = await fetchWithProxy(url);
+        lastStatus = response.status;
+        if (!response.ok) continue;
+        text = await response.text();
+        if (text) break;
+      } catch (error) {
+        lastError = error;
+      }
     }
 
-    if (!url) throw new Error(`No URL found for feed ${feed.name}`);
+    if (!text) {
+      if (lastError) throw lastError;
+      throw new Error(`HTTP ${lastStatus || 0}`);
+    }
 
-    const response = await fetchWithProxy(url);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const text = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'text/xml');
 
